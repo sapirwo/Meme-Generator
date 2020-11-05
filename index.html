@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator</title>
+    <link rel="stylesheet" href="fonts/fontawesome/css/all.css">
+    <link rel="stylesheet" href="style/main-style.css">
+</head>
+
+<body onload="onInit()">
+
+    <!----------- HEADER----------------->
+    <header>
+        <section class="header-wrapper flex space-between align-center">
+            <div class="logo">
+                memegen
+            </div>
+            <nav class="main-menu-wrapper">
+                <ul class="clean-list flex align-center">
+                    <li>
+                        <a href="#" class="gallery-btn-main-header" onclick="onGallery(); toggleMobileMenu()">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="#about" class="about-btn-main-header" onclick="onGallery(); toggleMobileMenu()">About</a>
+                    </li>
+                </ul>
+                <button class="toggle-menu-btn fas fa-bars" onclick="toggleMobileMenu()" alt="Open main menu"></button>
+            </nav>
+        </section>
+    </header>
+    <div class="search-bar">
+        <span class="search-icon fab fa-searchengin"></span>
+        <input type="text" class="search-input" placeholder="Enter Keyword" list="key-words"
+            onkeyup="onKeywordSelect(this.value)">
+        <datalist id="key-words">
+        </datalist>
+        <div class="favorite-search-words">
+            <span class="top-1-favorite-word">happy</span>
+            <span class="top-2-favorite-word">cool</span>
+            <span class="top-3-favorite-word">amazing</span>
+        </div>
+    </div>
+    <main>
+        <section class="container">
+            <!-----------INFO MODAL-------------->
+            <div class="info-modal">
+                <btn class="btn-close-modal fas fa-times" onclick="toggleInfoModal()"></btn>
+                <h1 class="info-modal-header"></h1>
+                <p class="info-modal-paragraph"></p>
+                <div class="down-uplod-share">
+                    <!-- <input type="file" class="file-input btn" name="image" onchange="onImgInput(event)" /> -->
+                    <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                        <!-- <input name="img" id="imgData" type="hidden" /> -->
+                        <!-- <button class="btn" type="submit">Publish</button> -->
+                        <a href="#" class="btn" onclick="downloadImg(this)" download="my-img.jpg">Download as jpg</a>
+                        <div class="share-container"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!----------- MEME CONTAINER----------------->
+            <div class="meme-panels-container flex">
+
+                <!----------- MEME DISPLAY----------------->
+                <div class="meme-display-panel">
+                    <div class="canvas-wrapper">
+                        <canvas id="main-canvas" height="400px" width="400px"></canvas>
+                    </div>
+                </div>
+
+                <!----------- MEME CONTROL----------------->
+
+                <div class="meme-control-panel grid">
+                    <div class="canvas-editor grid">
+                        <input type="text" class="input-text" placeholder="Enter meme text"
+                            oninput="onSetLineTxt(this.value)">
+                        <button class="btn-take-line-up fas fa-arrow-up" onclick="onTakeLineUp()"></button>
+                        <button class="btn-take-line-down fas fa-arrow-down" onclick="onTakeLineDown()"></button>
+                        <button class="btn-switch-line-focus" onclick="onSwitchLine()">1<img
+                                src="btn-icons/up-and-down-opposite-double-arrows-side-by-side.png"
+                                alt="Up or down line"></button>
+                        <button class="btn-add-line" onclick="onAddLine()"><img src="btn-icons/add.png"
+                                alt="add line"></button>
+                        <button class="btn-delete-line" onclick="onRemoveLine()"><img src="btn-icons/trash.png"
+                                alt=""></button>
+                        <button class="btn-larger-font " onclick="onIncreaseFontBtn()"><img
+                                src="btn-icons/increase font - icon.png" alt=""></button>
+                        <button class="btn-smaller-font" onclick="onDecreaseFontBtn()"><img
+                                src="btn-icons/decrease font - icon.png" alt=""></button>
+                        <button class="btn-align-text-left" onclick="onAlignLeftBtn()"><img
+                                src="btn-icons/align-to-left.png" alt=""></button>
+                        <button class="btn-align-text-center" onclick="onAlignCenterBtn()"><img
+                                src="btn-icons/center-text-alignment.png" alt=""></button>
+                        <button class="btn-align-text-right" onclick="onAlignRightBtn()"><img
+                                src="btn-icons/align-to-right.png" alt=""></button>
+                        <select name="font-selector" class="select-font" onchange="onFontSelectBtn(this.value)">
+                            <option value="impact">Impact</option>
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Didot">Didot</option>
+                        </select>
+
+                        <label for="stroke-color-selector"><img src="btn-icons/text stroke.png"
+                                alt="Text stroke photo"></label>
+                        <input type="color" id="stroke-color-selector" name="color-selector" value="#e66465"
+                            onchange="onStrokeColorBtn(this.value)" hidden>
+
+                        <label for="fill-color-selector"><img src="btn-icons/paint-board-and-brush.png"
+                                alt="Fill color select photo"></label>
+                        <input type="color" id="fill-color-selector" name="color-selector" value="#e66465"
+                            onchange="onFillColorBtn(this.value)" hidden>
+                        <button class="big-btn" onclick="onShareBtn()">Download</button>
+                        <button class="small-btn" onclick="onLoadBtn()">Load</button>
+                        <button class="big-btn" onclick="onSaveMeme()">Save</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!----------- GALLERY CONTAINER----------------->
+            <div class="main-gallery-container grid">
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!----------- ABOUT----------------->
+
+    <div class="about" id="about">
+        <img class="profile-pic" src="img/Profile PIc/70403086_10157467592844868_6999762030563426304_o.jpg" alt="">
+        <p>Sapir Wolloch<br><span class="full-stack">Full Stack Developer</span><br>
+        <div class="social-media-logos">
+            <a href="https://www.facebook.com/sapirwo/"><img src="img/social-logos/linkedin-logo.png"
+                    alt="linkedin-logo"></a></p>
+            <a href="https://www.facebook.com/sapirwo/"><img src="img/social-logos/facebook-logo.png"
+                    alt="facebook-logo"></a></p>
+            <a href="https://github.com/sapirwo"><img src="/img/social-logos/github-logo.png" alt="github-logo"></a></p>
+        </div>
+    </div>
+
+
+
+    <!----------- FOOTER----------------->
+    <footer class="footer">
+
+        <section class="footer-content align-center">
+            <div class="logo">
+                memegen
+            </div>
+            <small>© 2020 memegen - All Rights Reserved - Sapir Wolloch</small>
+        </section>
+
+
+        <script src="js/meme-utills.js"></script>
+        <script src="js/meme-service.js"></script>
+        <script src="js/meme-controller.js"></script>
+        <script src="js/gallery-service.js"></script>
+        <script src="js/gallery-controller.js"></script>
+
+</body>
+
+</html>
